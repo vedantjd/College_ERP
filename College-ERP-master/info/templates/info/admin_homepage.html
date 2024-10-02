@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>homepage</title>
+      {% load static %}
+
+    <!-- Bootstrap core CSS -->
+      <link href="{% static '/info/homepage/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+      <link href="{% static '/info/homepage/css/heroic-features.css' %}" rel="stylesheet">
+      
+      
+      <link href="{% static '/info/homepage/css/nav_bar.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+    <header>
+      <link href="{% static '/info/homepage/css/chatbox.css' %}" rel="stylesheet">
+    
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'announcement_page'%}">Announcements</a>
+        <div class="dropdown">
+        <a href="{% url 'edit_members'%}" class="dropbtn">Manage members</a>
+        <div class="dropdown-content">
+            <a href="{% url 'add_teacher' %}">Add Staff</a>
+            <a href="{% url 'add_student' %}">Add Students</a>
+            <a href="{% url 'add_delete_HOD' %}">Edit HOD</a>
+            <a href="{% url 'assign_teacher' %}">Allocate/Deallocate Teachers</a>
+            <a href="{% url 'add_delete_dept' %}">Add/Delete Department</a>
+            <a href="{% url 'add_delete_class' %}">Add/Delete Class</a>
+        </div>
+    </div>
+        <a href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+      </div>
+      
+      <!-- Use any element to open the sidenav -->
+      <span onclick="openNav()" style="cursor: pointer;">
+        <div class="containers">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+          </div>
+    
+    </span>
+    <h1>Welcome {{ request.user }}</h1>
+    <script>
+      /* Set the width of the side navigation to 250px */
+      function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+      }
+
+      /* Set the width of the side navigation to 0 */
+      function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      }
+
+      function myFunction(x) {
+      x.classList.toggle("change");
+      }
+    </script>
+  </header>
+      <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+      
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Jumbotron Header -->
+      
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <form id="logout-form" action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <a href="#" class="btn btn-primary" type="button" onclick="document.getElementById('logout-form').submit();">Logout</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+
+
+      <script src="{% static '/info/homepage/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static '/info/homepage/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      
+</body>
+</html>

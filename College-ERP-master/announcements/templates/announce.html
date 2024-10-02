@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <!-- <link href="{% static '/info/homepage/css/chatbox.css' %}" rel="stylesheet"> -->
+    <meta charset="UTF-8">
+    <link href="{% static '/info/homepage/css/nav_bar.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static '/info/homepage/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <title>Announcement Page</title>
+</head>
+<body>
+  <header>
+    <link href="{% static '/info/homepage/css/chatbox.css' %}" rel="stylesheet">
+  
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="{% url 'index' %}">Home</a>
+      
+      <a href="{% url 'announcement_page'%}">Announcements</a>
+      <div class="dropdown">
+      <a href="{% url 'edit_members'%}" class="dropbtn">Manage members</a>
+      <div class="dropdown-content">
+          <a href="{% url 'add_teacher' %}">Add Staff</a>
+          <a href="{% url 'add_student' %}">Add Students</a>
+          <a href="{% url 'add_delete_HOD' %}">Edit HOD</a>
+          <a href="{% url 'assign_teacher' %}">Allocate/Deallocate Teachers</a>
+          <a href="{% url 'add_delete_dept' %}">Add/Delete Department</a>
+          <a href="{% url 'add_delete_class' %}">Add/Delete Class</a>
+      </div>
+  </div>
+      <a href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+    </div>
+    <!-- Use any element to open the sidenav -->
+    <span onclick="openNav()" style="cursor: pointer;">
+      <div class="containers" style="width: fit-content;">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+  
+  </span>
+  <h1>Announcements</h1>
+  <script>
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function myFunction(x) {
+    x.classList.toggle("change");
+    }
+  </script>
+</header> 
+    <main>
+        {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+        <section class="announcement-form" id="announce_form">
+            <h2>Create Announcement</h2>
+            <div class="card-body">
+            <form id="announcement-form" class="form" role="form" method="POST" action="{% url 'announcement_page' %}">
+                {% csrf_token %}
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label form-control-label">To Department</label>
+                  <div class="col-lg-9">
+                      <select class="form-control" name="dept" id="depts" required>
+                        <option value="All">All</option>
+                          {% for dept in all_dept %}
+                              <option value="{{ dept.id }}">
+                                  {{ dept }}
+                              </option>
+                          {% endfor %}
+                  </select>
+                  </div>
+                  </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Title</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" id="title" name="titles" required>
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Content</label>
+                        <div class="col-lg-9">
+                            <textarea class="form-control" id="content" name="content" required ></textarea>
+                        </div>
+                        </div>                
+                        <input class="btn btn-primary ml-auto" type="submit" value="Create">
+            </form>
+        </div>
+        </section>
+        <section class="announcements" id="announce_list">
+            <h2>Latest Announcements</h2>
+            <ul id="announcement-list"  none></ul>
+            {% for announcement in announcements %}
+            
+                <li style=" list-style-type: none; border-color: black; border-style: double; margin: 1%; padding: 1%; ">
+                  <h2>Announcer: {{ announcement.announcer }}</h2>  
+                  <h2>Subject: {{ announcement.title }}</h2>
+                    <p>Message: {{ announcement.content }}</p>
+                    <p>Time: {{ announcement.timestamp }}</p>
+                </li>
+                {% endfor %}
+                <!-- Announcements will be added here dynamically -->
+            </ul>
+        </section>
+    </main>
+
+    <script>
+      const dept = document.getElementById("depts");
+      const hod = document.getElementById("all_hods");
+      dept.addEventListener('change',()=>{
+        if(dept.value == "All"){
+          var option_hod = hod.options[0];
+          option_hod.selected = true;
+          const hods = document.getElementById("all_hods").disabled=true;
+        }
+        else{
+          const hods = document.getElementById("all_hods").disabled=false;
+        }
+      });
+    </script>
+
+    
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <a class="btn btn-primary" href="/accounts/logout">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="{% static '/info/homepage/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static '/info/homepage/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  
+
+</body>
+</html>

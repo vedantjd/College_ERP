@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+    <title>Notification Example</title>
+</head>
+<body>
+    <h2>Notification Example</h2>
+
+    <button onclick="requestNotificationPermission()">Request Notification Permission</button>
+    <button onclick="scheduleNotification()">Schedule Notification</button>
+
+    <script>
+        function requestNotificationPermission() {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    console.log("Notification permission granted!");
+                } else {
+                    console.warn("Notification permission denied.");
+                }
+            });
+        }
+
+        function scheduleNotification() {
+            setTimeout(function () {
+                sendNotification();
+            }, 1000); // 5000 milliseconds (5 seconds)
+        }
+
+        function sendNotification() {
+            if (Notification.permission === "granted") {
+                const notification = new Notification("Delayed Notification", {
+                    icon: "path/to/icon.png",
+                });
+
+                // Handle user interaction with the notification
+                notification.onclick = function () {
+                    console.log("Notification clicked!");
+                };
+
+                notification.onclose = function () {
+                    console.log("Notification closed!");
+                };
+            } else if (Notification.permission === "denied") {
+                console.warn("Notification permission is denied.");
+            } else {
+                console.warn("Notification permission is not granted yet. Request permission first.");
+            }
+        }
+    </script>
+</body>
+</html>

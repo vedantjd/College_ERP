@@ -1,0 +1,52 @@
+{% extends 'info/base.html' %}
+
+    {% block content %}
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center">
+                        Timetable
+                    </h2>
+                </div>
+                <div id="no-more-tables">
+                    <table class="col-sm-12 table table-bordered table-striped table-condensed cf">
+                        <thead class="cf" style="
+                        text-align: center; vertical-align:middle;">
+                            <tr>
+                                <th>      </th>
+                                <th>10:00 - 11:00</th>
+                                <th>11:00 - 12:00</th>
+                                <th>12:00 - 01:00</th>
+                                <th style="
+                                text-align: center; vertical-align:middle;">Lunch</th>
+                                <th>01:45 - 02:45</th>
+                                <th>02:45 - 03:30</th>
+                                <th style="
+                                text-align: center; vertical-align:middle;">Break</th>
+                                <th>03:30 - 04:30</th>
+                                <th>04:30 - 05:30</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in matrix %}
+                            <tr>
+                                {% for j in i %}
+                                    {% if forloop.counter == 1 %}
+                                    <td ><b>{{ j }}</b></td>
+                                    {% else %}
+                                    <td style="text-align: center;">{{ j }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {% endblock %}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>homepage</title>
+      {% load static %}
+
+    <!-- Bootstrap core CSS -->
+      <link href="{% static '/info/homepage/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+      <!-- <link href="{% static '/info/homepage/css/heroic-features.css' %}" rel="stylesheet"> -->
+      <link href="{% static '/info/homepage/css/nav_bar.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    
+    <header>
+      <link href="{% static '/info/homepage/css/chatbox.css' %}" rel="stylesheet">
+    
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'announcement_page'%}">Announcements</a>
+        <div class="dropdown">
+        <a href="{% url 'edit_members'%}" class="dropbtn">Manage members</a>
+        <div class="dropdown-content">
+            <a href="{% url 'add_teacher' %}">Add Staff</a>
+            <a href="{% url 'add_student' %}">Add Students</a>
+            <a href="{% url 'assign_teacher' %}">Allocate/Deallocate Teachers</a>
+            <a href="{% url 'add_delete_dept' %}">Add/Delete Department</a>
+            <a href="{% url 'add_delete_class' %}">Add/Delete Class</a>
+        </div>
+        
+      
+    </div>
+    <a href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+      </div>
+      <!-- Use any element to open the sidenav -->
+      <span onclick="openNav()" style="cursor: pointer;">
+        <div class="containers">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+          </div>
+    
+    </span>
+    <h1>Welcome {{ request.user }}</h1>
+    <script>
+      /* Set the width of the side navigation to 250px */
+      function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+      }
+
+      /* Set the width of the side navigation to 0 */
+      function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      }
+
+      function myFunction(x) {
+      x.classList.toggle("change");
+      }
+    </script>
+  </header>
+    <!-- Page Content -->
+    <div class="container">
+
+      
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+      <!-- Page Features -->
+      <div class="row text-center justify-content-center" style="padding: 5%;">
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card"> 
+                <a class="px-2 py-3" href="{% url 'add_teacher' %}">
+                    <img class="card-img-top" src="{% static 'info/images/teacher.PNG' %}" alt="">
+                </a>
+                <div class="card-body">
+                    <h4 class="card-title">Add Teacher</h4>
+                    <p class="card-text">Enter the details of new faculty to add a new teacher to database. Make sure to correctly input values.</p>
+                </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card">
+            <a class="px-2 py-3" href="{% url 'add_student' %}">
+                <img class="card-img-top" src="{% static 'info/images/student.PNG' %}" alt="">
+            </a>
+            <div class="card-body">
+                <h4 class="card-title">Add Student</h4>
+                <p class="card-text">Enter the details of a student to enroll a new student. 
+                    Fill the details carefully as they are important for academics.</p>
+            </div>
+          </div>
+        </div>
+      
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <a class="px-2 py-3" href="{% url 'assign_teacher' %}">
+              <img class="card-img-top" src="{% static 'info/images/assignment.jpg' %}" alt="">
+          </a>
+          <div class="card-body">
+              <h4 class="card-title">Allocate/Deallocate Teachers</h4>
+              <p class="card-text">Enter the details of a classes which are going to be conducted.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <a class="px-2 py-3" href="{% url 'add_delete_dept' %}">
+              <img class="card-img-top" src="{% static 'info/images/dept.png' %}" alt="">
+          </a>
+          <div class="card-body">
+              <h4 class="card-title">Add/Delete Department</h4>
+              <p class="card-text">Enter the details of a classes which are going to be conducted.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <form id="logout-form" action="{% url 'logout' %}" method="POST">
+              {% csrf_token %}
+              <a href="#" class="btn btn-primary" type="button" onclick="document.getElementById('logout-form').submit();">Logout</a>
+            </form>
+         </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+
+
+      <script src="{% static '/info/homepage/vendor/jquery/jquery.min.js' %}"></script>
+    <!-- <script src="{% static '/info/homepage/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
+
+
+    <script>
+      /* Set the width of the side navigation to 250px */
+      function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+      }
+
+      /* Set the width of the side navigation to 0 */
+      function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      }
+
+      function myFunction(x) {
+x.classList.toggle("change");
+}
+    </script>
+  </body>
+
+</html>
